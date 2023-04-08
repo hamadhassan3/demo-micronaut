@@ -4,20 +4,30 @@ plugins {
 }
 
 version = "0.1"
-group = "com.example"
+group = "com.example.bookmanagement"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("jakarta.annotation:jakarta.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
 
+    runtimeOnly("mysql:mysql-connector-java")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    compileOnly("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    compileOnly("com.google.code.findbugs:jsr305")
+    implementation("io.micronaut.serde:micronaut-serde-api")
 }
 
 
@@ -25,8 +35,8 @@ application {
     mainClass.set("com.example.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
-    targetCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = JavaVersion.toVersion("16")
+    targetCompatibility = JavaVersion.toVersion("16")
 }
 
 graalvmNative.toolchainDetection = false

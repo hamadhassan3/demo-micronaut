@@ -1,6 +1,26 @@
 micronaut:
   application:
     name: demoMicronaut
+  server:
+    port: 8000
+
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET"
+datasources:
+  default:
+    url: jdbc:mysql://localhost/test?generateSimpleParameterMetadata=true&zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=false
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: click123
+    dialect: MYSQL
+    schema-generate: CREATE_DROP
+
 netty:
   default:
     allocator:

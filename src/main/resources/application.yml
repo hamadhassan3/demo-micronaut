@@ -12,9 +12,8 @@ micronaut:
           secret:
             generator:
               secret: "TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET"
-datasources:
-  default:
-    url: jdbc:mysql://localhost/test?generateSimpleParameterMetadata=true&zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=false
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?generateSimpleParameterMetadata=true&zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=false
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: click123

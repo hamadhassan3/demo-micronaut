@@ -20,6 +20,10 @@ public class GenreService {
         this.genreRepository = genreRepository;
     }
 
+    public long countGenres(){
+        return genreRepository.count();
+    }
+
     public List<GenreResponse> readAllGenres(){
         return genreRepository.find();
     }

@@ -7,6 +7,7 @@ version = "0.1"
 group = "com.example.bookmanagement"
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -28,6 +29,7 @@ dependencies {
     implementation("io.micronaut.reactor:micronaut-reactor-http-client")
     compileOnly("com.google.code.findbugs:jsr305")
     implementation("io.micronaut.serde:micronaut-serde-api")
+    implementation("io.micronaut:micronaut-http")
 }
 
 

@@ -24,10 +24,10 @@ public class Author {
     private String lastName;
 
     @NotNull
-    @MappedProperty(value = "date_of_birth")
+    @MappedProperty(value = "date_of_birth", definition = "DATETIME")
     private Date dateOfBirth;
 
-    @MappedProperty(value = "date_of_death")
+    @MappedProperty(value = "date_of_death", definition = "DATETIME")
     private Date dateOfDeath;
 
     @NotNull

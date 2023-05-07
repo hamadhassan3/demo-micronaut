@@ -20,6 +20,10 @@ public class LanguageService {
         this.languageRepository = languageRepository;
     }
 
+    public long countLanguages(){
+        return languageRepository.count();
+    }
+
     public List<LanguageResponse> readAllLanguages(){
         return languageRepository.find();
     }

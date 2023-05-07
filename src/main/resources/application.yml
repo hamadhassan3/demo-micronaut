@@ -3,6 +3,13 @@ micronaut:
     name: demoMicronaut
   server:
     port: 8000
+    cors:
+      enabled: true
+
+      configurations:
+        ui:
+          allowed-origins:
+            - http://localhost:3000
 
   security:
     authentication: bearer
@@ -12,8 +19,9 @@ micronaut:
           secret:
             generator:
               secret: "TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET_TOP_SECRET"
-  datasource:
-    url: jdbc:mysql://localhost:3306/test?generateSimpleParameterMetadata=true&zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=false
+datasources:
+  default:
+    url: jdbc:mysql://localhost:3306/test?generateSimpleParameterMetadata=true&zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: click123

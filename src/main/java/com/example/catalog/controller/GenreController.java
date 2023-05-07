@@ -1,6 +1,5 @@
 package com.example.catalog.controller;
 
-import com.example.catalog.model.Genre;
 import com.example.catalog.model.dto.request.GenreRequest;
 import com.example.catalog.model.dto.response.GenreResponse;
 import com.example.catalog.service.GenreService;

@@ -20,6 +20,10 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
+    public long countAuthors(){
+        return authorRepository.count();
+    }
+
     public List<AuthorResponse> readAllAuthors(){
         return authorRepository.find();
     }

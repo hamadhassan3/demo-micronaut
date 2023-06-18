@@ -6,5 +6,5 @@ import java.util.Date;
 
 public record AuthorRequest(@NotBlank String firstName,
                             @NotBlank String lastName, @NotNull Date dateOfBirth,
-                            Date dateOfDeath) {
+                            @NotNull Date dateOfDeath) {
 }

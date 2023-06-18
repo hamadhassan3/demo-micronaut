@@ -30,7 +30,6 @@ public class Author {
     @MappedProperty(value = "date_of_death", definition = "DATETIME")
     private Date dateOfDeath;
 
-    @NotNull
     @Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "author")
     @MappedProperty(value = "books")
     private List<Book> books;

@@ -37,6 +37,7 @@ public class BookController {
     @Produces(MediaType.APPLICATION_JSON)
     @Post("/")
     public BookResponse createBook(@Body BookRequest bookRequest){
+
         return bookService.createBook(bookRequest);
     }
 

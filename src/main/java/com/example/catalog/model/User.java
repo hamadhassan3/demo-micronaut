@@ -1,11 +1,9 @@
 package com.example.catalog.model;
 
-import io.micronaut.data.annotation.GeneratedValue;
-import io.micronaut.data.annotation.Id;
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.data.annotation.MappedProperty;
+import io.micronaut.data.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @MappedEntity
 public class User {
@@ -20,6 +18,10 @@ public class User {
 
     @MappedProperty(value = "password", definition = "VARCHAR(255)")
     private String password;
+
+    @MappedProperty(value = "role")
+    @Relation(value = Relation.Kind.MANY_TO_MANY, mappedBy = "users")
+    private List<Role> roles;
 
     public Long getId() {
         return id;
@@ -43,5 +45,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

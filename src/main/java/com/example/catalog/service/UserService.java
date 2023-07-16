@@ -15,8 +15,11 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final RoleService roleService;
+
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     public long countUsers(){
@@ -38,9 +41,9 @@ public class UserService {
         return optionalUserResponse.get();
     }
 
-    public UserResponse readUserByUsername(String username){
+    public User readUserByUsername(String username){
 
-        Optional<UserResponse> optionalUserResponse = userRepository.findByUsername(username);
+        Optional<User> optionalUserResponse = userRepository.findByUsername(username);
 
         if(optionalUserResponse.isEmpty()){
             throw new NoSuchElementException("A User with this username does not exist!");
@@ -52,11 +55,17 @@ public class UserService {
     @Transactional
     public UserResponse createUser(UserRequest userRequest){
 
-        User user = new User();
-        user.setUsername(userRequest.username());
-        user.setPassword(userRequest.password());
-        user.setRoles(userRequest.roles());
-        return new UserResponse(user);
+        Optional<User> optionalUser = userRepository.findByUsername(userRequest.username());
+        if(optionalUser.isPresent()){
+            throw new NoSuchElementException("A User with this id does not exist!");
+        }
+        else {
+            User user = new User();
+            user.setUsername(userRequest.username());
+            user.setPassword(userRequest.password());
+            user.setRoles(roleService.readAllById(userRequest.roles()));
+            return new UserResponse(userRepository.save(user));
+        }
     }
 
     @Transactional
@@ -69,8 +78,8 @@ public class UserService {
             User user = optionalUser.get();
             user.setUsername(userRequest.username());
             user.setPassword(userRequest.password());
-            user.setRoles(userRequest.roles());
-            return new UserResponse(user);
+            user.setRoles(roleService.readAllById(userRequest.roles()));
+            return new UserResponse(userRepository.update(user));
         }
     }
 

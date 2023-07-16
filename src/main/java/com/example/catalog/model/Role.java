@@ -3,7 +3,6 @@ package com.example.catalog.model;
 import io.micronaut.data.annotation.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @MappedEntity
@@ -17,7 +16,6 @@ public class Role {
     @MappedProperty(value = "name", definition = "VARCHAR(255)")
     private String name;
 
-    @MappedProperty(value = "users")
     @Relation(value = Relation.Kind.MANY_TO_MANY, mappedBy = "roles")
     private List<User> users;
 

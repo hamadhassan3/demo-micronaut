@@ -1,9 +1,7 @@
 package com.example.catalog.security;
 
+import com.example.catalog.model.Role;
 import com.example.catalog.model.User;
-import com.example.catalog.model.dto.response.RoleResponse;
-import com.example.catalog.model.dto.response.UserResponse;
-import com.example.catalog.repository.UserRepository;
 import com.example.catalog.service.UserService;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;
@@ -32,22 +30,21 @@ public class AuthenticationProviderUsernamePassword implements AuthenticationPro
 
         return Flux.create(emitter -> {
 
-            UserResponse user = null;
-
             try{
-                user = userService.readUserByUsername((String) authenticationRequest.getIdentity());
+                User user = userService.readUserByUsername((String) authenticationRequest.getIdentity());
+                if (user != null &&
+                        authenticationRequest.getSecret().equals(user.getPassword())) {
+                    emitter.next(AuthenticationResponse.success((String) authenticationRequest.getIdentity(),
+                            user.getRoles().stream().map(Role::getName).collect(Collectors.toList())));
+                    emitter.complete();
+                } else {
+                    emitter.error(AuthenticationResponse.exception());
+                }
             }
             catch(NoSuchElementException ex){
+                emitter.error(ex);
             }
 
-            if (user != null &&
-                    authenticationRequest.getSecret().equals(user.password())) {
-                emitter.next(AuthenticationResponse.success((String) authenticationRequest.getIdentity(),
-                        user.roles().stream().map(RoleResponse::name).collect(Collectors.toList())));
-                emitter.complete();
-            } else {
-                emitter.error(AuthenticationResponse.exception());
-            }
         }, FluxSink.OverflowStrategy.ERROR);
     }
 

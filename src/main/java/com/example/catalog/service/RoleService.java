@@ -9,7 +9,9 @@ import jakarta.inject.Singleton;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 public class RoleService {
@@ -36,6 +38,14 @@ public class RoleService {
         }
 
         return optionalRoleResponse.get();
+    }
+
+    public List<Role> readAllById(List<Long> ids){
+        return ids.stream().map(id -> {
+                    Optional<Role> r = roleRepository.findById(id);
+                    return r.orElse(null);
+                }
+        ).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     @Transactional

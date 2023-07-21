@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Singleton
 public class RoleService {
@@ -23,6 +24,21 @@ public class RoleService {
 
     public long countRoles(){
         return roleRepository.count();
+    }
+
+    public Role getRoleById(Long id){
+        Optional<Role> optionalRole = roleRepository.findById(id);
+
+        if(optionalRole.isEmpty()){
+            throw new NoSuchElementException("A Role with this id does not exist!");
+        }
+
+        return optionalRole.get();
+    }
+
+    public List<Role> getAllRoles(){
+        return StreamSupport.stream(roleRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public List<RoleResponse> readAllRoles(){
@@ -69,6 +85,11 @@ public class RoleService {
             role = roleRepository.update(role);
             return new RoleResponse(role);
         }
+    }
+
+    @Transactional
+    public Role updateRole(Role role){
+        return roleRepository.update(role);
     }
 
     @Transactional

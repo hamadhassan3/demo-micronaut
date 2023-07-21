@@ -1,6 +1,7 @@
 package com.example.catalog.model;
 
 import io.micronaut.data.annotation.*;
+import io.micronaut.data.jdbc.annotation.JoinColumn;
 import io.micronaut.data.jdbc.annotation.JoinTable;
 
 import javax.validation.constraints.NotBlank;
@@ -20,9 +21,9 @@ public class User {
     @MappedProperty(value = "password", definition = "VARCHAR(255)")
     private String password;
 
-    @JoinTable(name = "user_role")
-    @Relation(value = Relation.Kind.MANY_TO_MANY, cascade = Relation.Cascade.PERSIST)
-    private List<Role> roles;
+    @MappedProperty(value = "role")
+    @Relation(value = Relation.Kind.MANY_TO_ONE)
+    private Role role;
 
     public Long getId() {
         return id;
@@ -48,11 +49,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

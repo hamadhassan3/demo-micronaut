@@ -1,6 +1,7 @@
 package com.example.catalog.model;
 
 import io.micronaut.data.annotation.*;
+import io.micronaut.data.jdbc.annotation.JoinTable;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -16,8 +17,8 @@ public class Role {
     @MappedProperty(value = "name", definition = "VARCHAR(255)")
     private String name;
 
-    @Relation(value = Relation.Kind.MANY_TO_MANY, mappedBy = "roles")
-    private List<User> users;
+    @Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "role")
+    private List<User> user;
 
     public Long getId() {
         return id;
@@ -35,11 +36,11 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(List<User> user) {
+        this.user = user;
     }
 }

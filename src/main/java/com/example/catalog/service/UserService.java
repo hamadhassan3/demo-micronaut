@@ -7,9 +7,8 @@ import com.example.catalog.repository.UserRepository;
 import jakarta.inject.Singleton;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class UserService {
@@ -27,29 +26,29 @@ public class UserService {
     }
 
     public List<UserResponse> readAllUsers(){
-        return userRepository.find();
+        return userRepository.find().stream().map(UserResponse::new).collect(Collectors.toList());
     }
 
     public UserResponse readUser(Long id){
 
-        Optional<UserResponse> optionalUserResponse = userRepository.find(id);
+        Optional<User> optionalUserResponse = userRepository.find(id);
 
         if(optionalUserResponse.isEmpty()){
             throw new NoSuchElementException("A User with this id does not exist!");
         }
 
-        return optionalUserResponse.get();
+        return new UserResponse(optionalUserResponse.get());
     }
 
     public User readUserByUsername(String username){
 
-        Optional<User> optionalUserResponse = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        if(optionalUserResponse.isEmpty()){
+        if(optionalUser.isEmpty()){
             throw new NoSuchElementException("A User with this username does not exist!");
         }
 
-        return optionalUserResponse.get();
+        return optionalUser.get();
     }
 
     @Transactional
@@ -57,15 +56,18 @@ public class UserService {
 
         Optional<User> optionalUser = userRepository.findByUsername(userRequest.username());
         if(optionalUser.isPresent()){
-            throw new NoSuchElementException("A User with this id does not exist!");
+            throw new NoSuchElementException("A User with this id already exists!");
         }
-        else {
-            User user = new User();
-            user.setUsername(userRequest.username());
-            user.setPassword(userRequest.password());
-            user.setRoles(roleService.readAllById(userRequest.roles()));
-            return new UserResponse(userRepository.save(user));
-        }
+
+        User user = new User();
+        user.setUsername(userRequest.username());
+        user.setPassword(userRequest.password());
+
+        user.setRole(roleService.getRoleById(userRequest.role()));
+
+        userRepository.save(user);
+
+        return new UserResponse(user);
     }
 
     @Transactional
@@ -78,8 +80,8 @@ public class UserService {
             User user = optionalUser.get();
             user.setUsername(userRequest.username());
             user.setPassword(userRequest.password());
-            user.setRoles(roleService.readAllById(userRequest.roles()));
-            return new UserResponse(userRepository.update(user));
+            user.setRole(roleService.getRoleById(userRequest.role()));
+            return new UserResponse(user);
         }
     }
 
